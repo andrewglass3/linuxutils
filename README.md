@@ -1,2 +1,2 @@
 # linuxutils
-Linux Utilities Container for Troubleshootig tasks
+Linux Utilities Container for Troubleshooting tasks
