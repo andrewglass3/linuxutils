@@ -25,7 +25,7 @@ Built to avoid mac os tooling changes that may catch us unaware i.e nslookup usa
 
 RUN \
        apt-get -qq update && \
-       apt-get install -y ack awscli binutils curl dnsutils git htop inetutils-ping mtr netcat nmap python python3 python3-pip sed tcpdump wget && rm -rf /var/lib/apt/lists/* && apt-get clean && \
+       apt-get install -y ack awscli curl dnsutils git htop inetutils-ping mtr netcat nmap  python python3 python3-pip sed tcpdump util-linux wget && rm -rf /var/lib/apt/lists/* && apt-get clean && \
        mkdir -p /tools/kafka && \
        cd /tools/kafka/ && \
        wget https://archive.apache.org/dist/kafka/2.5.1/kafka_2.12-2.5.1.tgz && \
