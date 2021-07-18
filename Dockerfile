@@ -23,9 +23,6 @@ Built to avoid mac os tooling changes that may catch us unaware i.e nslookup usa
 
     > /etc/motd
 
-#COPY . $INSTALL/someapp
-
-
 RUN \
        apt-get -qq update && \
        apt-get install -y ack awscli binutils curl dnsutils git htop inetutils-ping mtr netcat nmap python python3 python3-pip sed tcpdump wget && rm -rf /var/lib/apt/lists/* && apt-get clean && \
