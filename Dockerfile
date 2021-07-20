@@ -16,15 +16,16 @@ Built to avoid mac os tooling changes that may catch us unaware i.e nslookup usa
 \n\
 (c) Andrew Glass 2021  (c) \n\
 \n\
-===============================================================\n\
-= Kafka and Cassandra tools are found in the tools directory  =\n\
-= However the tools can be called form initial login location =\n\
-= As they have been added to container path,you can call      =\n\
-= kafka-tools or cqlsh in cassandra.                          =\n\
-=                                                             =\n\
-= Other Cloud tools inc aws-okta, saml2aws tfenv, helm,      =\n\
-= helmsman, kubectl and vault.                                =\n\
-==============================================================\n"\
+====================================================================\n\
+= Kafka and Cassandra tools are found in the tools directory       =\n\
+= However the tools can be called form initial login location      =\n\
+= As they have been added to container path,you can call           =\n\
+= kafka-tools or cqlsh in cassandra.  To list available            =\n\
+= kafka & cassandra tools simply run 'listkafka or 'listcassandra' =\n\
+=                                                                  =\n\
+= Other Cloud tools inc aws-okta, saml2aws tfenv, helm,            =\n\
+= helmsman, kubectl and vault.                                     =\n\
+===================================================================\n"\
 
 
     > /etc/motd
@@ -55,4 +56,12 @@ ENV PATH="/home/linuxbrew/.linuxbrew/bin:/tools/kafka/kafka_2.12-2.5.1/bin:/tool
 USER root
 
 RUN \
-        brew update && brew install aws-okta helm helmsman saml2aws kubectl tfenv
+        brew update && brew install aws-okta helm helmsman saml2aws kubectl tfenv 
+
+RUN \
+        brew tap hashicorp/tap
+RUN \
+        brew install hashicorp/tap/vault
+RUN \
+        echo 'alias listkafka="ls /tools/kafka/kafka_2.12-2.5.1/bin/"' >> ~/.bashrc && \
+        echo 'alias listcassandra="ls /tools/cassandra/apache-cassandra-3.11.10/bin"' >> ~/.bashrc
