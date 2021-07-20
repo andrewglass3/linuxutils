@@ -43,7 +43,6 @@ RUN \
        wget https://www.mirrorservice.org/sites/ftp.apache.org/cassandra/3.11.10/apache-cassandra-3.11.10-bin.tar.gz && \
        tar -xf apache-cassandra-3.11.10-bin.tar.gz && \
        rm apache-cassandra-3.11.10-bin.tar.gz 
-#RUN    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 RUN useradd -m -s /bin/bash linuxbrew && \
     echo 'linuxbrew ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
 
