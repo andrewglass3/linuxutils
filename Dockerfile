@@ -36,18 +36,18 @@ RUN \
        cd /tools/kafka/ && \
        wget https://archive.apache.org/dist/kafka/2.5.1/kafka_2.12-2.5.1.tgz && \
        tar xvzf kafka_2.12-2.5.1.tgz && \
-       rm kafka_2.12-2.5.1.tgz && \
        mkdir -p /tools/cassandra && \
+       rm kafka_2.12-2.5.1.tgz && \
        cd /tools/cassandra && \
        wget https://www.mirrorservice.org/sites/ftp.apache.org/cassandra/3.11.10/apache-cassandra-3.11.10-bin.tar.gz && \
        tar -xf apache-cassandra-3.11.10-bin.tar.gz && \
        rm apache-cassandra-3.11.10-bin.tar.gz 
-#RUN    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 RUN useradd -m -s /bin/bash linuxbrew && \
     echo 'linuxbrew ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
 
 USER linuxbrew
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+#RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
 USER root
 ENV PATH="/home/linuxbrew/.linuxbrew/bin:/tools/kafka/kafka_2.12-2.5.1/bin:/tools/cassandra/apache-cassandra-3.11.10/bin:${PATH}"
@@ -55,7 +55,7 @@ ENV PATH="/home/linuxbrew/.linuxbrew/bin:/tools/kafka/kafka_2.12-2.5.1/bin:/tool
 USER root
 
 RUN \
-        brew update && brew install aws-okta helm helmsman saml2aws kubectl tfenv
+        brew update && brew install go aws-okta helm helmsman saml2aws kubectl tfenv
 RUN \
         brew tap hashicorp/tap
 RUN \
