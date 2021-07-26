@@ -16,16 +16,18 @@ Built to avoid mac os tooling changes that may catch us unaware i.e nslookup usa
 \n\
 (c) Andrew Glass 2021  (c) \n\
 \n\
-====================================================================\n\
-= Kafka and Cassandra tools are found in the tools directory       =\n\
-= However the tools can be called form initial login location      =\n\
-= As they have been added to container path,you can call           =\n\
-= kafka-tools or cqlsh in cassandra.  To list available            =\n\
-= kafka & cassandra tools simply run 'listkafka or 'listcassandra' =\n\
-=                                                                  =\n\
-= Other Cloud tools inc aws-okta, saml2aws tfenv, helm,            =\n\
-= helmsman, kubectl and vault.                                     =\n\
-===================================================================\n"\
+=====================================================================\n\
+= Kafka and Cassandra tools are found in the tools directory        =\n\
+= However the tools can be called form initial login location       =\n\
+= As they have been added to container path,you can call            =\n\
+= kafka-tools or cqlsh in cassandra.  To list available             =\n\
+= kafka & cassandra tools simply run 'listkafka or 'listcassandra'  =\n\
+=                                                                   =\n\
+= Other Cloud tools inc aws-okta, saml2aws tfenv, helm,             =\n\
+= helmsman, kubectl and vault.                                      =\n\
+=                                                                   =\n\
+= steampipe.io is installed - to run it you must 'su docker' first  =\n\
+====================================================================\n"\
 
     > /etc/motd
 
@@ -41,9 +43,19 @@ RUN \
        cd /tools/cassandra && \
        wget https://www.mirrorservice.org/sites/ftp.apache.org/cassandra/3.11.10/apache-cassandra-3.11.10-bin.tar.gz && \
        tar -xf apache-cassandra-3.11.10-bin.tar.gz && \
-       rm apache-cassandra-3.11.10-bin.tar.gz 
+       rm apache-cassandra-3.11.10-bin.tar.gz
+USER root
+RUN apt-get update && apt-get install -y sudo
+RUN useradd -m -s /bin/bash docker && \
+    echo 'docker ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
+
 RUN useradd -m -s /bin/bash linuxbrew && \
     echo 'linuxbrew ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
+
+RUN rm -rf /var/lib/apt/lists/* && apt-get clean
+
+USER docker
+RUN sudo /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/turbot/steampipe/main/install.sh)"
 
 USER linuxbrew
 #RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
@@ -62,4 +74,7 @@ RUN \
         brew install hashicorp/tap/vault
 RUN \
         echo 'alias listkafka="ls /tools/kafka/kafka_2.12-2.5.1/bin/"' >> ~/.bashrc && \
-        echo 'alias listcassandra="ls /tools/cassandra/apache-cassandra-3.11.10/bin"' >> ~/.bashrc
+        echo 'alias listcassandra="ls /tools/cassandra/apache-cassandra-3.11.10/bin"' >> ~/.bashrc && \
+        echo 'echo 'Current Brew Packages Installed - '' >> ~/.bashrc
+
+RUN     echo 'brew list && brew list --cask' >> ~/.bashrc
